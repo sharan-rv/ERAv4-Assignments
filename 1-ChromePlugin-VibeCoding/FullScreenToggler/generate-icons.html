@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Icons</title>
+</head>
+<body>
+    <h1>Fullscreen Toggle Extension Icons</h1>
+    <p>Right-click on each icon below and save as PNG:</p>
+    
+    <div>
+        <h3>16x16 Icon</h3>
+        <canvas id="canvas16" width="16" height="16"></canvas>
+    </div>
+    
+    <div>
+        <h3>48x48 Icon</h3>
+        <canvas id="canvas48" width="48" height="48"></canvas>
+    </div>
+    
+    <div>
+        <h3>128x128 Icon</h3>
+        <canvas id="canvas128" width="128" height="128"></canvas>
+    </div>
+
+    <script>
+        const svg = `<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+            <rect width="128" height="128" fill="#4285f4" rx="16"/>
+            <path d="M32 32h24v8H40v16H32V32zm32 0h32v8H72v16H64V32zM32 64h16v16H40v8H32V64zm32 0h32v16H72v8H64V64z" fill="white"/>
+        </svg>`;
+
+        function generateIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            const img = new Image();
+            const svgBlob = new Blob([svg], {type: 'image/svg+xml'});
+            const url = URL.createObjectURL(svgBlob);
+            
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, size, size);
+                URL.revokeObjectURL(url);
+            };
+            
+            img.src = url;
+        }
+
+        // Generate all icons
+        generateIcon('canvas16', 16);
+        generateIcon('canvas48', 48);
+        generateIcon('canvas128', 128);
+    </script>
+</body>
+</html>

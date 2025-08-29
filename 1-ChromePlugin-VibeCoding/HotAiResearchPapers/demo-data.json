@@ -1,0 +1,132 @@
+{
+  "papers": [
+    {
+      "id": "2401.00123",
+      "title": "Large Language Models for Automated Data Science: Current Capabilities and Future Directions",
+      "summary": "This paper presents a comprehensive survey of large language models (LLMs) applied to automated data science tasks. We analyze current capabilities in data preprocessing, feature engineering, model selection, and result interpretation. Our findings show significant progress in automated ML pipeline construction, with GPT-4 achieving 85% accuracy on standard benchmarks. We identify key challenges and propose research directions for the next generation of AI-powered data science tools.",
+      "authors": ["Zhang, Wei", "Chen, Li", "Johnson, Sarah", "Brown, Michael"],
+      "category": "cs.AI",
+      "published": "2024-01-15T10:30:00Z",
+      "arxivUrl": "https://arxiv.org/abs/2401.00123",
+      "pdfUrl": "https://arxiv.org/pdf/2401.00123",
+      "citations": 45,
+      "downloads": 1200,
+      "socialShares": 23,
+      "hotnessScore": 0.89
+    },
+    {
+      "id": "2401.00145",
+      "title": "Multi-Modal Foundation Models: Bridging Vision, Language, and Audio Understanding",
+      "summary": "We introduce a novel multi-modal foundation model architecture that seamlessly integrates visual, linguistic, and auditory information processing. Our model achieves state-of-the-art performance on 15 benchmark datasets, including ImageNet, GLUE, and AudioSet. The architecture employs cross-modal attention mechanisms and shared representation learning, enabling zero-shot transfer across modalities. Experimental results demonstrate 23% improvement over existing multi-modal approaches.",
+      "authors": ["Anderson, Emily", "Wilson, David", "Garcia, Maria"],
+      "category": "cs.CV",
+      "published": "2024-01-14T15:45:00Z",
+      "arxivUrl": "https://arxiv.org/abs/2401.00145",
+      "pdfUrl": "https://arxiv.org/pdf/2401.00145",
+      "citations": 67,
+      "downloads": 2100,
+      "socialShares": 45,
+      "hotnessScore": 0.92
+    },
+    {
+      "id": "2401.00167",
+      "title": "Efficient Transformers for Edge Computing: A Survey and Performance Analysis",
+      "summary": "This survey examines efficient transformer architectures designed for resource-constrained edge devices. We analyze 25 recent approaches including linear attention, sparse attention, and knowledge distillation methods. Our comprehensive evaluation on mobile and IoT devices shows that efficient transformers can achieve 80% of the performance of full models while using only 15% of the computational resources. We provide practical guidelines for deploying transformers on edge devices.",
+      "authors": ["Lee, Jennifer", "Patel, Raj", "Thompson, Alex", "Davis, Lisa"],
+      "category": "cs.LG",
+      "published": "2024-01-13T09:15:00Z",
+      "arxivUrl": "https://arxiv.org/abs/2401.00167",
+      "pdfUrl": "https://arxiv.org/pdf/2401.00167",
+      "citations": 34,
+      "downloads": 890,
+      "socialShares": 18,
+      "hotnessScore": 0.76
+    },
+    {
+      "id": "2401.00189",
+      "title": "Neural Architecture Search for Natural Language Processing: A Comprehensive Study",
+      "summary": "We present a systematic study of neural architecture search (NAS) methods applied to NLP tasks. Our research covers 12 different NAS algorithms and their application to language modeling, machine translation, and text classification. We introduce a new benchmark dataset and evaluation framework for comparing NAS approaches in NLP. Results show that automated architecture discovery can outperform hand-designed models by 12% on average across all tasks.",
+      "authors": ["Rodriguez, Carlos", "Kim, Soo-Jin", "Miller, James"],
+      "category": "cs.CL",
+      "published": "2024-01-12T14:20:00Z",
+      "arxivUrl": "https://arxiv.org/abs/2401.00189",
+      "pdfUrl": "https://arxiv.org/pdf/2401.00189",
+      "citations": 28,
+      "downloads": 750,
+      "socialShares": 12,
+      "hotnessScore": 0.71
+    },
+    {
+      "id": "2401.00201",
+      "title": "Quantum Machine Learning: Algorithms, Applications, and Future Prospects",
+      "summary": "This paper provides a comprehensive overview of quantum machine learning (QML) algorithms and their applications. We discuss quantum versions of classical ML algorithms including quantum neural networks, quantum support vector machines, and quantum clustering. Our analysis covers both theoretical foundations and practical implementations on current quantum hardware. We identify key challenges in QML and propose research directions for achieving quantum advantage in machine learning tasks.",
+      "authors": ["Wang, Xiaoli", "Singh, Priya", "Martinez, Roberto"],
+      "category": "cs.NE",
+      "published": "2024-01-11T11:30:00Z",
+      "arxivUrl": "https://arxiv.org/abs/2401.00201",
+      "pdfUrl": "https://arxiv.org/pdf/2401.00201",
+      "citations": 56,
+      "downloads": 1650,
+      "socialShares": 31,
+      "hotnessScore": 0.84
+    },
+    {
+      "id": "2401.00223",
+      "title": "Federated Learning with Differential Privacy: Balancing Utility and Privacy in Distributed Systems",
+      "summary": "We propose a novel federated learning framework that incorporates differential privacy guarantees while maintaining model utility. Our approach uses adaptive noise injection and client-side privacy budgeting to achieve optimal privacy-utility trade-offs. Experimental results on real-world datasets show that our method achieves 95% of centralized learning performance while providing strong privacy guarantees. We also analyze the impact of privacy parameters on convergence and model accuracy.",
+      "authors": ["Taylor, Robert", "Liu, Mei", "Johnson, Brian", "White, Amanda"],
+      "category": "stat.ML",
+      "published": "2024-01-10T16:45:00Z",
+      "arxivUrl": "https://arxiv.org/abs/2401.00223",
+      "pdfUrl": "https://arxiv.org/pdf/2401.00223",
+      "citations": 41,
+      "downloads": 1100,
+      "socialShares": 19,
+      "hotnessScore": 0.78
+    },
+    {
+      "id": "2401.00245",
+      "title": "Self-Supervised Learning for Computer Vision: Beyond ImageNet Pre-training",
+      "summary": "This paper explores self-supervised learning approaches that go beyond traditional ImageNet pre-training. We introduce a new self-supervised objective based on temporal consistency and geometric constraints. Our method achieves state-of-the-art performance on multiple downstream tasks including object detection, segmentation, and video understanding. We also demonstrate that our approach is more robust to domain shifts and requires less labeled data for fine-tuning.",
+      "authors": ["Chen, Wei", "Anderson, Sarah", "Garcia, Miguel"],
+      "category": "cs.CV",
+      "published": "2024-01-09T13:10:00Z",
+      "arxivUrl": "https://arxiv.org/abs/2401.00245",
+      "pdfUrl": "https://arxiv.org/pdf/2401.00245",
+      "citations": 38,
+      "downloads": 980,
+      "socialShares": 16,
+      "hotnessScore": 0.73
+    },
+    {
+      "id": "2401.00267",
+      "title": "Attention Mechanisms in Deep Learning: A Theoretical Analysis and Practical Guide",
+      "summary": "We provide a comprehensive theoretical analysis of attention mechanisms in deep learning, covering both theoretical foundations and practical applications. Our analysis includes mathematical formulations of different attention variants, computational complexity analysis, and empirical comparisons on benchmark datasets. We also present guidelines for choosing appropriate attention mechanisms for different tasks and provide open-source implementations of popular attention variants.",
+      "authors": ["Brown, Michael", "Wilson, Emily", "Davis, Carlos"],
+      "category": "cs.LG",
+      "published": "2024-01-08T10:25:00Z",
+      "arxivUrl": "https://arxiv.org/abs/2401.00267",
+      "pdfUrl": "https://arxiv.org/pdf/2401.00267",
+      "citations": 52,
+      "downloads": 1350,
+      "socialShares": 25,
+      "hotnessScore": 0.81
+    }
+  ],
+  "metadata": {
+    "totalPapers": 8,
+    "lastUpdated": "2024-01-15T12:00:00Z",
+    "categories": {
+      "cs.AI": 1,
+      "cs.CV": 2,
+      "cs.LG": 2,
+      "cs.CL": 1,
+      "cs.NE": 1,
+      "stat.ML": 1
+    },
+    "averageHotnessScore": 0.81,
+    "totalCitations": 361,
+    "totalDownloads": 9920,
+    "totalSocialShares": 189
+  }
+}

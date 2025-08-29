@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Fullscreen Toggle",
+  "version": "1.0",
+  "description": "Toggle fullscreen mode with a keyboard shortcut",
+  "permissions": ["activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Fullscreen Toggle"
+  },
+  "commands": {
+    "toggle-fullscreen": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+F"
+      },
+      "description": "Toggle fullscreen mode"
+    }
+  }
+}

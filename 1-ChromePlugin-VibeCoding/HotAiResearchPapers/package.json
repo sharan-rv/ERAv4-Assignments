@@ -1,0 +1,46 @@
+{
+  "name": "hot-ai-r-chrome-extension",
+  "version": "1.0.0",
+  "description": "A Chrome extension that shows the hottest AI research papers from arXiv, ranked by popularity and engagement",
+  "main": "popup.js",
+  "scripts": {
+    "build": "echo 'No build step required for Chrome extension'",
+    "test": "echo 'No tests specified'",
+    "lint": "echo 'No linter configured'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "ai",
+    "research",
+    "papers",
+    "arxiv",
+    "machine-learning",
+    "artificial-intelligence",
+    "academic",
+    "scholarly"
+  ],
+  "author": "AI Research Community",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ai-research-papers-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/ai-research-papers-extension/issues"
+  },
+  "homepage": "https://github.com/yourusername/ai-research-papers-extension#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {},
+  "manifest": {
+    "version": 3,
+    "permissions": [
+      "activeTab",
+      "storage",
+      "https://arxiv.org/*",
+      "https://api.semanticscholar.org/*"
+    ]
+  }
+}

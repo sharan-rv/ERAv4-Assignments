@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive CNN Receptive Fields Learning Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+        }
+
+        .control-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .control-panel h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .layer-controls {
+            margin-bottom: 25px;
+        }
+
+        .layer-type-selector {
+            margin-bottom: 20px;
+        }
+
+        .layer-type-selector label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .layer-type-selector select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 14px;
+            background: #f7fafc;
+        }
+
+        .parameter-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+        }
+
+        .parameter-group h4 {
+            margin-bottom: 15px;
+            color: #2b6cb0;
+            font-size: 1.1rem;
+        }
+
+        .parameter-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .parameter-row label {
+            font-weight: 500;
+            color: #4a5568;
+            min-width: 80px;
+        }
+
+        .parameter-row input, .parameter-row select {
+            width: 120px;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .add-layer-btn {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .add-layer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        .layers-list {
+            margin-top: 20px;
+        }
+
+        .layer-item {
+            background: #edf2f7;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+            position: relative;
+        }
+
+        .layer-item h5 {
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+
+        .layer-item p {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+
+        .remove-layer {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e53e3e;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-layer:hover {
+            background: #c53030;
+        }
+
+        .run-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .run-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .results-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .results-panel h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+
+
+        .visualization-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .visualization-item {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .visualization-item h3 {
+            margin-bottom: 15px;
+            color: #2d3748;
+            font-size: 1.1rem;
+        }
+
+        .visualization-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .receptive-field-info {
+            background: #e6fffa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #38b2ac;
+            margin: 20px 0;
+        }
+
+        .receptive-field-info h3 {
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .rf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .rf-item {
+            background: #f0fff4;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #38b2ac;
+        }
+
+        .rf-item.current {
+            border-color: #e53e3e;
+            background: #fed7d7;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .info-box {
+            background: #bee3f8;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3182ce;
+            margin: 15px 0;
+        }
+
+        .info-box h4 {
+            margin-bottom: 10px;
+            color: #2c5282;
+        }
+
+        .info-box p {
+            color: #2a4365;
+            font-size: 0.95rem;
+        }
+
+        .upload-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border: 2px dashed #cbd5e0;
+        }
+
+        .upload-section input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+        }
+
+        .upload-section p {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Interactive CNN Receptive Fields Learning Tool</h1>
+            <p>Experiment with different layer configurations and see how they affect receptive fields in real-time!</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <h2>🎛️ Layer Controls</h2>
+                
+                <div class="upload-section">
+                    <h4>📤 Upload Image (Optional)</h4>
+                    <input type="file" id="imageInput" accept="image/*">
+                    <p>Images will be resized to 8×8 for clarity</p>
+                </div>
+
+                <div class="layer-controls">
+                    <div class="layer-type-selector">
+                        <label for="layerType">Layer Type:</label>
+                        <select id="layerType">
+                            <option value="conv">Convolution</option>
+                            <option value="pool">Pooling</option>
+                        </select>
+                    </div>
+
+                    <!-- Convolution Parameters -->
+                    <div id="convParams" class="parameter-group">
+                        <h4>🔍 Convolution Parameters</h4>
+                        
+                        <div class="parameter-row">
+                            <label>Kernel Type:</label>
+                            <select id="kernelType">
+                                <option value="edge_detection">Edge Detection</option>
+                                <option value="blur">Blur</option>
+                                <option value="sharpen">Sharpen</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
+
+                        <div class="parameter-row">
+                            <label>Kernel Size:</label>
+                            <input type="number" id="kernelSize" value="3" min="1" max="7" step="2">
+                        </div>
+
+                        <div class="parameter-row">
+                            <label>Stride:</label>
+                            <input type="number" id="convStride" value="1" min="1" max="3">
+                        </div>
+
+                        <div class="parameter-row">
+                            <label>Padding:</label>
+                            <input type="number" id="convPadding" value="0" min="0" max="2">
+                        </div>
+                    </div>
+
+                    <!-- Pooling Parameters -->
+                    <div id="poolParams" class="parameter-group" style="display: none;">
+                        <h4>📊 Pooling Parameters</h4>
+                        
+                        <div class="parameter-row">
+                            <label>Pool Type:</label>
+                            <select id="poolType">
+                                <option value="max">Max Pooling</option>
+                                <option value="average">Average Pooling</option>
+                            </select>
+                        </div>
+
+                        <div class="parameter-row">
+                            <label>Pool Size:</label>
+                            <input type="number" id="poolSize" value="2" min="2" max="4" step="1">
+                        </div>
+
+                        <div class="parameter-row">
+                            <label>Stride:</label>
+                            <input type="number" id="poolStride" value="2" min="1" max="3">
+                        </div>
+                    </div>
+
+                    <button class="add-layer-btn" onclick="addLayer()">➕ Add Layer</button>
+                </div>
+
+                <div class="layers-list" id="layersList">
+                    <div class="info-box">
+                        <h4>💡 How to Use</h4>
+                        <p>1. Choose layer type and parameters</p>
+                        <p>2. Click "Add Layer" to build your network</p>
+                        <p>3. Click "Run Network" to see results</p>
+                        <p>4. Experiment with different configurations!</p>
+                    </div>
+                </div>
+
+                <button class="run-btn" onclick="runNetwork()">🚀 Run Network</button>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="results-panel">
+                <h2>🔬 Network Results</h2>
+                
+
+
+                <div id="resultsSection" style="display: none;">
+                    <div class="receptive-field-info">
+                        <h3>📏 Receptive Field Growth Through Layers</h3>
+                        <div class="rf-grid" id="rfGrid"></div>
+                    </div>
+
+                    <div class="visualization-grid" id="visualizationGrid"></div>
+                </div>
+
+                <div id="loadingSection" style="display: none;">
+                    <div class="loading">
+                        🔄 Processing your network...<br>
+                        <small>This may take a few seconds</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let layers = [];
+        let currentResults = null;
+
+
+
+        // Show/hide parameter groups based on layer type
+        document.getElementById('layerType').addEventListener('change', function() {
+            const convParams = document.getElementById('convParams');
+            const poolParams = document.getElementById('poolParams');
+            
+            if (this.value === 'conv') {
+                convParams.style.display = 'block';
+                poolParams.style.display = 'none';
+            } else {
+                convParams.style.display = 'none';
+                poolParams.style.display = 'block';
+            }
+        });
+
+        // Add a new layer to the network
+        function addLayer() {
+            const layerType = document.getElementById('layerType').value;
+            let layerConfig = { type: layerType };
+
+            if (layerType === 'conv') {
+                layerConfig = {
+                    type: 'conv',
+                    kernel_type: document.getElementById('kernelType').value,
+                    kernel_size: parseInt(document.getElementById('kernelSize').value),
+                    stride: parseInt(document.getElementById('convStride').value),
+                    padding: parseInt(document.getElementById('convPadding').value)
+                };
+            } else if (layerType === 'pool') {
+                layerConfig = {
+                    type: 'pool',
+                    pool_type: document.getElementById('poolType').value,
+                    pool_size: parseInt(document.getElementById('poolSize').value),
+                    stride: parseInt(document.getElementById('poolStride').value)
+                };
+            }
+
+            layers.push(layerConfig);
+            updateLayersList();
+        }
+
+        // Update the layers list display
+        function updateLayersList() {
+            const layersList = document.getElementById('layersList');
+            const infoBox = layersList.querySelector('.info-box');
+            
+            if (layers.length === 0) {
+                layersList.innerHTML = '';
+                layersList.appendChild(infoBox);
+                return;
+            }
+
+            layersList.innerHTML = '';
+            layersList.appendChild(infoBox);
+
+            layers.forEach((layer, index) => {
+                const layerItem = document.createElement('div');
+                layerItem.className = 'layer-item';
+                
+                let layerInfo = '';
+                if (layer.type === 'conv') {
+                    layerInfo = `
+                        <h5>${layer.kernel_type.replace('_', ' ').toUpperCase()} Convolution</h5>
+                        <p>Kernel: ${layer.kernel_size}×${layer.kernel_size}</p>
+                        <p>Stride: ${layer.stride}, Padding: ${layer.padding}</p>
+                    `;
+                } else if (layer.type === 'pool') {
+                    layerInfo = `
+                        <h5>${layer.pool_type.toUpperCase()} Pooling</h5>
+                        <p>Size: ${layer.pool_size}×${layer.pool_size}</p>
+                        <p>Stride: ${layer.stride}</p>
+                    `;
+                }
+
+                layerItem.innerHTML = layerInfo + `
+                    <button class="remove-layer" onclick="removeLayer(${index})">×</button>
+                `;
+                
+                layersList.appendChild(layerItem);
+            });
+        }
+
+        // Remove a layer from the network
+        function removeLayer(index) {
+            layers.splice(index, 1);
+            updateLayersList();
+        }
+
+        // Run the network and display results
+        async function runNetwork() {
+            if (layers.length === 0) {
+                alert('Please add at least one layer to your network!');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loadingSection').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+
+            try {
+                const response = await fetch('/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ layers: layers })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    displayResults(result);
+                } else {
+                    document.getElementById('loadingSection').style.display = 'none';
+                    document.getElementById('resultsSection').innerHTML = `
+                        <div class="error">❌ Error: ${result.error}</div>
+                    `;
+                    document.getElementById('resultsSection').style.display = 'block';
+                }
+            } catch (error) {
+                document.getElementById('loadingSection').style.display = 'none';
+                document.getElementById('resultsSection').innerHTML = `
+                    <div class="error">❌ Error: ${error.message}</div>
+                `;
+                document.getElementById('resultsSection').style.display = 'block';
+            }
+        }
+
+        // Display the network results
+        function displayResults(result) {
+            document.getElementById('loadingSection').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+
+            // Display receptive field information
+            const rfGrid = document.getElementById('rfGrid');
+            rfGrid.innerHTML = '';
+            
+            result.receptive_fields.forEach((rf_size, index) => {
+                const rfItem = document.createElement('div');
+                rfItem.className = `rf-item ${index === result.receptive_fields.length - 1 ? 'current' : ''}`;
+                rfItem.innerHTML = `
+                    <h4>Layer ${index}</h4>
+                    <p><strong>RF: ${rf_size}×${rf_size}</strong></p>
+                    ${index === 0 ? '<small>Input</small>' : ''}
+                `;
+                rfGrid.appendChild(rfItem);
+            });
+
+            // Display layer visualizations
+            const visualizationGrid = document.getElementById('visualizationGrid');
+            visualizationGrid.innerHTML = '';
+
+            // Add original image
+            const origItem = document.createElement('div');
+            origItem.className = 'visualization-item';
+            origItem.innerHTML = `
+                <h3>📷 Original Image</h3>
+                <img src="/static/${result.visualizations.original}" alt="Original Image">
+                <p>Shape: 8×8</p>
+            `;
+            visualizationGrid.appendChild(origItem);
+
+            // Add each layer visualization
+            result.layer_info.forEach((layer, index) => {
+                const layerItem = document.createElement('div');
+                layerItem.className = 'visualization-item';
+                layerItem.innerHTML = `
+                    <h3>${layer.name}</h3>
+                    <img src="/static/${result.visualizations[`layer_${index + 1}`]}" alt="${layer.name}">
+                    <p><strong>Input:</strong> ${layer.input_shape[0]}×${layer.input_shape[1]}</p>
+                    <p><strong>Output:</strong> ${layer.output_shape[0]}×${layer.output_shape[1]}</p>
+                    <p><small>${layer.config}</small></p>
+                `;
+                visualizationGrid.appendChild(layerItem);
+            });
+
+            // Add receptive field visualization
+            const rfItem = document.createElement('div');
+            rfItem.className = 'visualization-item';
+            rfItem.innerHTML = `
+                <h3>🎯 Receptive Field Growth</h3>
+                <img src="/static/${result.visualizations.receptive_fields}" alt="Receptive Fields">
+                <p>Shows how receptive fields grow through each layer</p>
+            `;
+            visualizationGrid.appendChild(rfItem);
+
+            currentResults = result;
+        }
+
+        // Initialize the page
+    </script>
+</body>
+</html>
+

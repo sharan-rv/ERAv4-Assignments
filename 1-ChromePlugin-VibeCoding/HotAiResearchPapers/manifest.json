@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Hot.AI.R",
+  "version": "1.0",
+  "description": "Discover the hottest AI research papers from arXiv, sorted by recency.",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://arxiv.org/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Hot.AI.R"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
