@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .response-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-height: 100px;
+        }
+
+        .response-container h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .response-text {
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .error {
+            color: #e74c3c;
+            background-color: #fdf2f2;
+            padding: 10px;
+            border-radius: 4px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .success {
+            color: #27ae60;
+            background-color: #f0f9f0;
+            padding: 10px;
+            border-radius: 4px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .security-note {
+            background-color: #e8f4fd;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ERA V4 AI Tutor</h1>
+            <p>Your personal AI tutor for ERA V4 Python notes - Ask questions and get instant help!</p>
+            <div class="security-note">
+                <strong>🔒 Your Gemini API key is secure:</strong> It's never stored locally and is deleted immediately after each request.
+            </div>
+        </div>
+
+        <form id="chatForm">
+            <div class="form-group">
+                <label for="apiKey">Gemini API Key:</label>
+                <input type="password" id="apiKey" name="apiKey" placeholder="Enter your Gemini API key" required>
+            </div>
+
+            <div class="form-group">
+                <label for="botRole">Bot Role:</label>
+                <select id="botRole" name="botRole" required>
+                    <option value="teacher">👨‍🏫 Teacher - Explain concepts and provide detailed explanations</option>
+                    <option value="quizzer">❓ Quizzer - Test your knowledge with questions and quizzes</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="question">Your Question:</label>
+                <textarea id="question" name="question" placeholder="Ask a question about your ERA V4 Python notes..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn" id="submitBtn">Ask Question</button>
+        </form>
+
+        <div class="response-container" id="responseContainer" style="display: none;">
+            <h3>AI Response:</h3>
+            <div id="responseText" class="response-text"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('chatForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const apiKey = document.getElementById('apiKey').value;
+            const question = document.getElementById('question').value;
+            const botRole = document.getElementById('botRole').value;
+            const submitBtn = document.getElementById('submitBtn');
+            const responseContainer = document.getElementById('responseContainer');
+            const responseText = document.getElementById('responseText');
+            
+            if (!apiKey || !question) {
+                alert('Please enter both API key and question');
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+            responseContainer.style.display = 'block';
+            responseText.innerHTML = '<div class="loading">Processing your question...</div>';
+            
+            try {
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        api_key: apiKey,
+                        question: question,
+                        bot_role: botRole
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    responseText.innerHTML = `<div class="success">${data.response}</div>`;
+                } else {
+                    responseText.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+                }
+            } catch (error) {
+                responseText.innerHTML = `<div class="error">Network error: ${error.message}</div>`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Ask Question';
+            }
+        });
+    </script>
+</body>
+</html>
